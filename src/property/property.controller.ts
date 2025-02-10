@@ -2,6 +2,8 @@ import { Controller, Get, Post, Param, Body, HttpCode, ParseIntPipe, Query, Pars
 import { CreatePropertyDto } from './dto/createProperty.dto';
 import { IdParamDto } from './dto/idParam.dto';
 import { ParseIdPipe } from './pipes/parseIdppipes';
+import { ZodValidationPipe } from './pipes/zodValidationPipe';
+import { createPropertySchema, CreatePropertyZodDto } from './dto/createPropertyZod.dto';
 
 @Controller('property')
 export class PropertyController {
@@ -20,6 +22,7 @@ export class PropertyController {
         return id;
     }
     @Post()
+    @UsePipes(new ZodValidationPipe(createPropertySchema))
     // @HttpCode(202) // так можно менять код ответа
 
     // create(@Body("test") test) {
@@ -30,8 +33,7 @@ export class PropertyController {
     // выбираем эту функцию для запуска валидации согласно типам CreatePropertyDto и только им. лишнее будет удалено
     // но если мы проверяем ее глобально в main, то здесь она не нужна
 
-    create(@Body() body: CreatePropertyDto) {
-        console.log(body)
+    create(@Body() body: CreatePropertyZodDto) {
         return body
     }
 
