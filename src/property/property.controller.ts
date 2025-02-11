@@ -1,9 +1,11 @@
-import { Controller, Get, Post, Param, Body, HttpCode, ParseIntPipe, Query, ParseBoolPipe, UsePipes, ValidationPipe, Patch } from '@nestjs/common';
+import { Controller, Get, Post, Param, Body, HttpCode, ParseIntPipe, Query, ParseBoolPipe, UsePipes, ValidationPipe, Patch, Headers } from '@nestjs/common';
 import { CreatePropertyDto } from './dto/createProperty.dto';
 import { IdParamDto } from './dto/idParam.dto';
 import { ParseIdPipe } from './pipes/parseIdppipes';
 import { ZodValidationPipe } from './pipes/zodValidationPipe';
 import { createPropertySchema, CreatePropertyZodDto } from './dto/createPropertyZod.dto';
+import { HeadersDto } from './dto/headers.dto';
+import { RequestHeader } from './pipes/request-header';
 
 @Controller('property')
 export class PropertyController {
@@ -38,7 +40,12 @@ export class PropertyController {
     }
 
     @Patch(':id')
-    update(@Param("id", ParseIdPipe) id, @Body() body: CreatePropertyDto) {
-        return body
+    update(
+        @Param("id", ParseIdPipe) id,
+        @Body()
+        body: CreatePropertyDto,
+        @RequestHeader(new ValidationPipe({ validateCustomDecorators: true })) header: HeadersDto   // так мы вытаскиваем содержимое заголовков запроса под полем "host" и присваиваем результат к переменной header
+    ) {
+        return header
     }
 }
