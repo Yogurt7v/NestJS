@@ -6,23 +6,42 @@ import { ZodValidationPipe } from './pipes/zodValidationPipe';
 import { createPropertySchema, CreatePropertyZodDto } from './dto/createPropertyZod.dto';
 import { HeadersDto } from './dto/headers.dto';
 import { RequestHeader } from './pipes/request-header';
+import { PropertyService } from './property.service';
+
+
+interface Service {
+    findAll()
+    findOne()
+    create()
+    update()
+}
 
 @Controller('property')
 export class PropertyController {
 
+    constructor(private propertyService: PropertyService) {
+        // this.propertyService = propertyService
+    }
+
     @Get()
-    findAll(): string {
-        return "ALL properties";
+    // findAll(): string {
+    //     return "ALL properties";
+    // }
+    findAll() {
+        return this.propertyService.findAll()
     }
 
     @Get(':id')
     findOne(@Param('id', ParseIntPipe) id, @Query("sort", ParseBoolPipe) sort) {
-
         console.log(id)
         console.log(sort)
-
         return id;
     }
+    // findOne() {
+    //     return this.propertyService.findOne()
+    // }
+
+
     @Post()
     @UsePipes(new ZodValidationPipe(createPropertySchema))
     // @HttpCode(202) // так можно менять код ответа
@@ -38,6 +57,9 @@ export class PropertyController {
     create(@Body() body: CreatePropertyZodDto) {
         return body
     }
+    // create() {
+    //     return this.propertyService.create()
+    // }
 
     @Patch(':id')
     update(
@@ -48,4 +70,7 @@ export class PropertyController {
     ) {
         return header
     }
+    // update() {
+    //     return this.propertyService.findOne()
+    // }
 }
