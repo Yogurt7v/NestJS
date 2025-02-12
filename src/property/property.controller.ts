@@ -32,10 +32,8 @@ export class PropertyController {
     }
 
     @Get(':id')
-    findOne(@Param('id', ParseIntPipe) id, @Query("sort", ParseBoolPipe) sort) {
-        console.log(id)
-        console.log(sort)
-        return id;
+    findOne(@Param('id', ParseIntPipe) id) {
+        return this.propertyService.findOne(id)
     }
     // findOne() {
     //     return this.propertyService.findOne()
@@ -43,7 +41,7 @@ export class PropertyController {
 
 
     @Post()
-    @UsePipes(new ZodValidationPipe(createPropertySchema))
+    // @UsePipes(new ZodValidationPipe(createPropertySchema))
     // @HttpCode(202) // так можно менять код ответа
 
     // create(@Body("test") test) {
@@ -54,8 +52,8 @@ export class PropertyController {
     // выбираем эту функцию для запуска валидации согласно типам CreatePropertyDto и только им. лишнее будет удалено
     // но если мы проверяем ее глобально в main, то здесь она не нужна
 
-    create(@Body() body: CreatePropertyZodDto) {
-        return body
+    create(@Body() dto: CreatePropertyDto) {
+        return this.propertyService.create(dto)
     }
     // create() {
     //     return this.propertyService.create()

@@ -10,5 +10,5 @@ export class CreatePropertyDto {
 
     @IsNumber() // функция из класс-валидатора для валидации типа значения
     @IsPositive()
-    area: number
+    price: number
 }
