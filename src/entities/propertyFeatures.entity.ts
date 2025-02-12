@@ -1,5 +1,6 @@
-import { Entity, Column } from "typeorm";
+import { Entity, Column, OneToOne, JoinColumn } from "typeorm";
 import { PrimaryGeneratedColumn } from "typeorm";
+import { Property } from "./property.entity";
 
 @Entity()
 export class PropertyFeature {
@@ -27,7 +28,8 @@ export class PropertyFeature {
     @Column()
     hasBalcony: boolean
 
-    @Column()
-    propertyId: number
+    @OneToOne(() => Property, (property) => property.propertyFeature)
+    @JoinColumn()
+    property: Property
 
 }
