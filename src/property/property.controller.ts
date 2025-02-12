@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Param, Body, HttpCode, ParseIntPipe, Query, ParseBoolPipe, UsePipes, ValidationPipe, Patch, Headers } from '@nestjs/common';
+import { Controller, Get, Post, Param, Body, HttpCode, ParseIntPipe, Query, ParseBoolPipe, UsePipes, ValidationPipe, Patch, Headers, Delete } from '@nestjs/common';
 import { CreatePropertyDto } from './dto/createProperty.dto';
 import { IdParamDto } from './dto/idParam.dto';
 import { ParseIdPipe } from './pipes/parseIdppipes';
@@ -7,6 +7,7 @@ import { createPropertySchema, CreatePropertyZodDto } from './dto/createProperty
 import { HeadersDto } from './dto/headers.dto';
 import { RequestHeader } from './pipes/request-header';
 import { PropertyService } from './property.service';
+import { UpdatePropertyDto } from './dto/updateProperty';
 
 
 interface Service {
@@ -63,12 +64,18 @@ export class PropertyController {
     update(
         @Param("id", ParseIdPipe) id,
         @Body()
-        body: CreatePropertyDto,
-        @RequestHeader(new ValidationPipe({ validateCustomDecorators: true })) header: HeadersDto   // так мы вытаскиваем содержимое заголовков запроса под полем "host" и присваиваем результат к переменной header
+        // body: CreatePropertyDto,
+        body: UpdatePropertyDto,
+        // @RequestHeader(new ValidationPipe({ validateCustomDecorators: true })) header: HeadersDto   // так мы вытаскиваем содержимое заголовков запроса под полем "host" и присваиваем результат к переменной header
     ) {
-        return header
+        return this.propertyService.update(id, body)
     }
     // update() {
     //     return this.propertyService.findOne()
     // }
+
+    @Delete(':id')
+    delete(@Param("id", ParseIntPipe) id) {
+        return this.propertyService.delete(id)
+    }
 }
