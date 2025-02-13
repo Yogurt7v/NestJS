@@ -1,5 +1,6 @@
-import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { PropertyFeature } from "./propertyFeatures.entity";
+import { User } from "./user.entity";
 
 @Entity()
 export class Property {
@@ -15,10 +16,14 @@ export class Property {
     @Column({ default: 0 })
     price: number
 
-    @OneToOne(() => PropertyFeature,
+    @OneToOne(() => PropertyFeature, // связь один к одному с propertyFeature
         (propertyFeature) => propertyFeature.property,
         {
             cascade: ['update']
         })
     propertyFeature: PropertyFeature
+
+    @ManyToOne(() => User, (user) => user.properties)
+    @JoinColumn({ name: "ownerId" }) // переименование столбца в ownerId
+    user: User
 }
