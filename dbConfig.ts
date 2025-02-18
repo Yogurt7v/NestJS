@@ -6,7 +6,7 @@ export const pgConfig: PostgresConnectionOptions = {
     type: "postgres",
     port: 5432,
     entities: [__dirname + "/**/*.entity{.ts,.js}"], // добавлены все сущности из данной папки чтобы не заводить руками
-    synchronize: false, // только для разработки, НЕ ДЛЯ ПРОДАКШЕНА!!!
+    synchronize: true, // только для разработки, НЕ ДЛЯ ПРОДАКШЕНА!!!
     ssl: {
         rejectUnauthorized: false,
     },
