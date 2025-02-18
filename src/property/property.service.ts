@@ -23,8 +23,8 @@ export class PropertyService {
     }
     async findAll(paginationDTO: PaginationDTO) {
         return await this.propertyRepo.find({
-            skip: (Number(paginationDTO.skip)) < 0 ? 0 : Number(paginationDTO.skip),
-            take: (Number(paginationDTO.limit) ?? DEFAULT_PAGE_SIZE) < 0 ? DEFAULT_PAGE_SIZE : Number(paginationDTO.limit),
+            skip: paginationDTO.skip,
+            take: paginationDTO.limit ?? DEFAULT_PAGE_SIZE,
         });
     }
     async create(dto: CreatePropertyDto) {
