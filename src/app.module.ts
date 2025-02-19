@@ -5,19 +5,17 @@ import { PropertyModule } from './property/property.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import dbConfig from './config/db.config';
-import dbConfigProduction from './config/db.config.production';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
-      isGlobal: true,
-      expandVariables: true,
-      load: [dbConfig, dbConfigProduction],
+      isGlobal: true, // подключает env фаил
+      expandVariables: true, //  подключает использование переменных в env файлах
+      load: [dbConfig],
     }),
     PropertyModule,
     TypeOrmModule.forRootAsync({
-      useFactory:
-        process.env.NODE_ENV === 'production' ? dbConfigProduction : dbConfig,
+      useFactory: dbConfig,
     }),
   ],
   controllers: [AppController],
