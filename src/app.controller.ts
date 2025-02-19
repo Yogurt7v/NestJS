@@ -6,12 +6,11 @@ import { ConfigService } from '@nestjs/config';
   path: '',
 })
 export class AppController {
-  constructor(private readonly appService: AppService,
-    private configService: ConfigService,) { }
+  constructor(private readonly appService: AppService, private configService: ConfigService,) { }
 
   @Get()
   getHello(): string {
-    return this.configService.get('dbconfig.dev.type') || "";
+    return this.configService.get('dbConfig.dev.type') || "";
   }
 
 }
