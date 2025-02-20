@@ -1,5 +1,6 @@
-import { BeforeInsert, Column, CreateDateColumn, Entity, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { BeforeInsert, Column, CreateDateColumn, Entity, IsNull, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Property } from "./property.entity";
+import * as bcrypt from "bcrypt"
 
 @Entity()
 export class User {
@@ -16,13 +17,13 @@ export class User {
     @Column()
     email: string;
 
-    @Column({ default: "" })
+    @Column({ nullable: true })
     avatarUrl?: string
 
     @CreateDateColumn() // сразу сгенерирует время при создании
     createdAt: Date
 
-    @Column()
+    @Column({ default: "" })
     password: string
 
     @OneToMany(() => Property, (property) => property.user)
@@ -33,7 +34,7 @@ export class User {
     likedProperties: Property[]
 
     @BeforeInsert()  // эта функция будет хэшировать пароль с помощью bcrypt перед вставкой в базу данных
-    hashPassword() {
-
+    async hashPassword() {
+        this.password = await bcrypt.hash(this.password, 10) // хэшируем пароль. 10 Salt Rounds - это оптимальное число по сложности и производительности шифрования
     }
 }
