@@ -11,6 +11,7 @@ export class AppController {
   @Get()
   getHello(): string {
     return this.configService.get('dbConfig.dev.type') || "";
+
   }
 
 }
