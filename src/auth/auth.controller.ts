@@ -11,10 +11,6 @@ export class AuthController {
   @UseGuards(LocalAuthGuard) // активирует локальную стратегию
   @Post("login")
   async login(@Request() req) {
-    const token = this.authService.login(req.user.id)
-    return {
-      id: req.user.id,
-      token
-    }
+    return this.authService.login(req.user.id)
   }
 }
