@@ -26,8 +26,8 @@ export class User {
     @Column({ default: "" })
     password: string
 
-    @Column()
-    hashedRefreshToken: string
+    @Column({ nullable: true, default: null }) // Разрешаем NULL и устанавливаем значение по умолчанию
+    hashedRefreshToken: string;
 
     @OneToMany(() => Property, (property) => property.user)
     properties: Property[]
