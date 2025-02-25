@@ -29,13 +29,26 @@ export class AuthService {
         return { id: user.id } // возвращать весь объект плохо. там лишние данные и те которые не надо показывать
     }
 
-    login(userId: number) {
-        const payload: AuthJwtPayload = { sub: userId }
-        const token = this.jwtService.sign(payload)
-        const refreshToken = this.jwtService.sign(payload, this.refreshTokenConfig)
+    async login(userId: number) {
+        // const payload: AuthJwtPayload = { sub: userId }
+        // const token = this.jwtService.sign(payload)
+        // const refreshToken = this.jwtService.sign(payload, this.refreshTokenConfig)
+        const { accessToken, refreshToken } = await this.generateToken(userId)
         return {
             id: userId,
-            token,
+            accessToken,
+            refreshToken
+        }
+    }
+
+    async generateToken(userId: number) {
+        const payload: AuthJwtPayload = { sub: userId }
+        const [accessToken, refreshToken] = await Promise.all([
+            this.jwtService.signAsync(payload),
+            this.jwtService.signAsync(payload, this.refreshTokenConfig)
+        ])
+        return {
+            accessToken,
             refreshToken
         }
     }

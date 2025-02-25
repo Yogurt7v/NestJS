@@ -26,6 +26,9 @@ export class User {
     @Column({ default: "" })
     password: string
 
+    @Column()
+    hashedRefreshToken: string
+
     @OneToMany(() => Property, (property) => property.user)
     properties: Property[]
 
