@@ -30,8 +30,8 @@ export class UserController {
 
 
   @Roles(Role.ADMIN, Role.EDITOR)
-  @UseGuards(RolesGuard)
-  @UseGuards(JwtAuthGuard) // именно в таком порядке. сначала будет вызван JwtAuthGuard, а потом RolesGuard
+  // @UseGuards(RolesGuard)
+  // @UseGuards(JwtAuthGuard) // именно в таком порядке. сначала будет вызван JwtAuthGuard, а потом RolesGuard
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.userService.remove(+id);
