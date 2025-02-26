@@ -4,11 +4,13 @@ import { AuthService } from './auth.service';
 import { LocalAuthGuard } from './guards/local-auth/local-auth.guard';
 import { RefreshAuthGuard } from './guards/refresh-auth/refresh-auth.guard';
 import { JwtAuthGuard } from './guards/jwt-auth/jwt-auth.guard';
+import { PublicDecorator } from './decorators/public.decorator';
 
 @Controller('auth') // адрес получается auth/login
 export class AuthController {
   constructor(private readonly authService: AuthService) { }
 
+  @PublicDecorator()
   @HttpCode(HttpStatus.OK)
   @UseGuards(LocalAuthGuard) // активирует локальную стратегию
   @Post("login")
