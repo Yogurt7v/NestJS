@@ -1,6 +1,7 @@
 import { BeforeInsert, Column, CreateDateColumn, Entity, IsNull, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Property } from "./property.entity";
 import * as bcrypt from "bcrypt"
+import { Role } from "src/auth/enums/role.enum";
 
 @Entity()
 export class User {
@@ -25,6 +26,9 @@ export class User {
 
     @Column({ default: "" })
     password: string
+
+    @Column({ type: "enum", enum: Role, default: Role.USER })
+    role: Role
 
     @Column({ nullable: true, default: null }) // Разрешаем NULL и устанавливаем значение по умолчанию
     hashedRefreshToken: string;
