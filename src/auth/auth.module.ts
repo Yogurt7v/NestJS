@@ -14,6 +14,8 @@ import refreshJwtConfig from './config/refresh-jwt.config';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './guards/jwt-auth/jwt-auth.guard';
 import { RolesGuard } from './guards/roles/roles.guard';
+import googleOAuth from 'src/auth/config/google-oauth.config';
+import { GoogleStrategy } from './strategies/google.strategy';
 
 @Module({
   imports: [
@@ -21,6 +23,7 @@ import { RolesGuard } from './guards/roles/roles.guard';
     JwtModule.registerAsync(jwtConfig.asProvider()),
     ConfigModule.forFeature(jwtConfig),
     ConfigModule.forFeature(refreshJwtConfig),
+    ConfigModule.forFeature(googleOAuth),
   ],
   controllers: [AuthController],
   providers: [
@@ -29,6 +32,7 @@ import { RolesGuard } from './guards/roles/roles.guard';
     LocalStrategy,
     JwtStrategy,
     RefreshStrategy,
+    GoogleStrategy,
     {
       provide: APP_GUARD, // это когда мы собираемся применить АПП_Гуард ко всем конечным точкам приложения
       useClass: JwtAuthGuard // этот класс будет применяться в качестве @UseGuard(JwtAuthGuard)
